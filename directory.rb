@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+puts "The students of my cohort at Makers Academy"
+puts "--------------"
+puts "Vincent Koch"
+puts "Harry Eiertyp"
+puts "Vincent Koch"
+puts "Harry Eiertyp"
+puts "Vincent Koch"
+puts "Harry Eiertyp"
+puts "Vincent Koch"
+puts "Harry Eiertyp"
+puts "Vincent Koch"
+puts "Harry Eiert"
+print "Overall, we have "
+print 10
+puts " great students"
