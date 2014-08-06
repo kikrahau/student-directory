@@ -27,7 +27,7 @@ end
 
 def print(students)
 	index=0
-	while index < students.length do
+	until index == students.length do
 		student = students[index]
 		if student[:name].slice(0).downcase == 'a' && student[:name].length < 12
 		 puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
