@@ -5,31 +5,29 @@ def print_header
 	puts "--------------"
 end
 
+def get_info(info)
+	puts "Please enter the next students #{info}"
+	information=gets.chomp
+	info=information.empty? ? "N/A" : information
+	return info
+end
+
+
 def input_students
 	puts "Please enter a name of a student and press enter"
 	puts "In case you are done entering, leave all the spaces empty and press enter"
 	puts "--------------"
 	#create an empty array
 	students = []
-	#get the first name, cohort and the age
-	print "name: "
-	name = gets.chomp
-	print "cohort: "
-	cohort = gets.chomp
-	print "age: " 
-	age = gets.chomp
 	#while the name is not empty, repeat this code
-	while !name.empty? do 
-		#add the student hash to the array
+	while true
+		name=get_info("name")
+		break if name == "exit"
+		cohort=get_info("cohort")
+		break if cohort == "exit"
+		age=get_info("age")
+		break if age == "exit"
 		students << {:name => name, :cohort => cohort, :age => age}
-		puts "Now we have #{students.length} students"
-		#get another name from the user
-		print "name: "
-		name = gets.chomp
-		print "cohort: "
-		cohort = gets.chomp
-		print "age: " 
-		age = gets.chomp
 	end
 	#return the array of students
 	students
@@ -39,7 +37,7 @@ def printing(students)
 	index=0
 	until index == students.length do
 		student = students[index]
-		puts "#{index + 1}. #{student[:name]} is #{student[:age]}(#{student[:cohort]} cohort)"
+		puts "#{index + 1}. Name:#{student[:name]} Age: #{student[:age]} Cohort:#{student[:cohort]} cohort)"
 		index += 1
 	end
 end
