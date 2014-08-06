@@ -26,10 +26,13 @@ def input_students
 end
 
 def print(students)
-	students.each_with_index do |student, index|
-	if student[:name].slice(0).downcase == 'a' && student[:name].length < 12
+	index=0
+	while index < students.length do
+		student = students[index]
+		if student[:name].slice(0).downcase == 'a' && student[:name].length < 12
 		 puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
-	end
+		end
+		index += 1
 	end
 end
 #call the methods
