@@ -3,6 +3,7 @@
 @students = []
 #print the header with the instructions
 def print_header
+	puts "\n"
 	puts "The students of my cohort at Makers Academy"
 	puts "--------------"
 end
@@ -15,9 +16,11 @@ def get_info(info)
 end
 
 def input_students
+	puts "--------------"
 	puts "Please enter a name,cohort and age of a student and press enter"
 	puts "In case you are done entering, please type exit and press enter"
 	puts "--------------"
+
 	#create an empty array
 	while true
 		name=get_info("name")
@@ -38,17 +41,22 @@ def input_students
 end
 
 def printing
+	puts "\n"
 	@students.each_with_index do |student, index|
 		puts "#{index + 1}. Name:#{student[:name]} Age: #{student[:age]} Cohort:#{student[:cohort]}"	
 	end
+	puts "\n"
 end
 
 def print_menu
 	#1. print the menu and ask the user what to do
+	puts "--------------"
 	puts "1. Input the students"
 	puts "2. Show the students"
-	puts "3. Save the list to students.csv"
+	puts "3. Save the list of students to students.csv"
+	puts "4. Load and show previous list of students"
 	puts "9. Exit"
+	puts "--------------"
 end
 
 def show_students
@@ -66,6 +74,9 @@ def process(selection)
 			show_students
 		when "3"
 			save_list
+		when
+			"4"
+			load_list
 		when "9"
 			exit # this will cause the program to terminate
 		else
@@ -83,7 +94,19 @@ def save_list
 		file.puts csv_line
 	end
 	file.close
+	show_students
 end
+
+def load_list
+	#open the file for reading it out
+	file = File.open("students.csv", "r")
+	file.readlines.each do |line|
+	name, age, cohort = line.chomp.split(',')
+		@students << {:name => name, :age => age, :cohort => cohort}
+	end
+	file.close
+end
+
 
 def interactive_menu
 	loop do
