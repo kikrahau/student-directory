@@ -10,7 +10,7 @@ end
 
 def get_info(info)
 	puts "Please enter the next students #{info}"
-	information=gets.chop
+	information=STDIN.gets.chop
 	info=information.empty? ? "N/A" : information
 	return info
 end
@@ -97,9 +97,9 @@ def save_list
 	show_students
 end
 
-def load_list
+def load_list (filename = "students.csv")
 	#open the file for reading it out
-	file = File.open("students.csv", "r")
+	file = File.open(filename, "r")
 	file.readlines.each do |line|
 	name, age, cohort = line.chomp.split(',')
 		@students << {:name => name, :age => age, :cohort => cohort}
@@ -107,11 +107,22 @@ def load_list
 	file.close
 end
 
+def try_load_list
+	filename = ARGV.first
+	return if filename.nil?
+	if File.exists?(filename)
+		load_list (filename)
+		puts "Loaded #{@students.length} from #{filename}"
+	else
+		puts "Sorry, #{filename} doesn't exist."
+		exit
+	end
+end
 
 def interactive_menu
 	loop do
 		print_menu
-		process(gets.chomp)
+		process(STDIN.gets.chomp)
 	end
 end
 
@@ -120,4 +131,5 @@ end
 #print_header
 #printing(students)
 #print_by_cohort(students)
+try_load_list
 interactive_menu
