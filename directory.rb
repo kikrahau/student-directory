@@ -1,17 +1,17 @@
 #!/usr/bin/env ruby
 #define students as an empty array accessible to all methods
+require 'CSV'
 @students = []
 #print the header with the instructions
 def print_header
-	puts "\n"
-	puts "The students of my cohort at Makers Academy"
+	puts "\nThe students of my cohort at Makers Academy"
 	puts "--------------"
 end
 
-def get_info(info)
-	puts "Please enter the next students #{info}"
-	information=STDIN.gets.chop
-	info=information.empty? ? "N/A" : information
+def get_info(type)
+	puts "Please enter the next students #{type}"
+	info=STDIN.gets.chop
+	info = "N/A" if info.empty?
 	return info
 end
 
@@ -30,22 +30,25 @@ def input_students
 		age=get_info("age")
 		break if age == "exit"
 		@students << {:name => name, :cohort => cohort, :age => age}
-		if @students.length > 1
-		puts "Now we have #{@students.length} students."
-		else
-		puts "Now we have #{@students.length} student."
-		end
+		puts "Now #{print_footer.downcase}"
 	end
 	#return the array of students
 	@students
 end
 
+def print_footer
+	if @students.length > 1
+	string = "We have #{@students.length} students."
+	else
+	string = "We have #{@students.length} student."
+	end
+	string
+end
+
 def printing
-	puts "\n"
 	@students.each_with_index do |student, index|
 		puts "#{index + 1}. Name:#{student[:name]} Age: #{student[:age]} Cohort:#{student[:cohort]}"	
 	end
-	puts "\n"
 end
 
 def print_menu
@@ -62,6 +65,7 @@ end
 def show_students
 	print_header
 	printing
+	puts print_footer
 end
 
 def process(selection)
@@ -73,9 +77,10 @@ def process(selection)
 			#show the students
 			show_students
 		when "3"
+			#save a list containing the students' information
 			save_list
-		when
-			"4"
+		when "4"
+			#loading a list containing the students' information
 			load_list
 		when "9"
 			exit # this will cause the program to terminate
@@ -85,26 +90,32 @@ def process(selection)
 end
 
 def save_list
-	#open the file for writing
-	file = File.open("students.csv", "w")
-	#iterate over the array of students
-	@students.each do |student|
-		student_data = [student[:name], student[:age], student[:cohort]]
-		csv_line = student_data.join(",")
-		file.puts csv_line
+	#ask for a filename
+	puts "What do you want to name your file?"
+	filename=gets.chomp
+	#create or open a CSV file
+	CSV.open("#{filename}.csv", "w") do |csv|
+	#iterate over the array of students and shovel it in a csv file
+		@students.each do |student|
+			student_data = [student[:name], student[:age], student[:cohort]]
+			csv << student_data
+		end
 	end
-	file.close
-	show_students
 end
 
-def load_list (filename = "students.csv")
-	#open the file for reading it out
-	file = File.open(filename, "r")
-	file.readlines.each do |line|
-	name, age, cohort = line.chomp.split(',')
-		@students << {:name => name, :age => age, :cohort => cohort}
-	end
-	file.close
+def add_students (name, age, cohort)
+	@students << {:name => name, :age => age, :cohort => cohort}
+end
+
+def load_list
+	#ask for the filename
+	puts "What's the name of your files? In case you'd like to get back to the menu, type \"menu\"."
+	filename = gets.chomp
+	#extract the information of a CSV file and return it as an array
+		CSV.foreach("#{filename}.csv") do |row|
+		name, age, cohort = row
+		add_students(name, age, cohort)
+		end
 end
 
 def try_load_list
@@ -126,10 +137,5 @@ def interactive_menu
 	end
 end
 
-#call the methods
-#students = input_students
-#print_header
-#printing(students)
-#print_by_cohort(students)
 try_load_list
 interactive_menu

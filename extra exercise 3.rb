@@ -1,0 +1,1 @@
+puts File.basename($0)
