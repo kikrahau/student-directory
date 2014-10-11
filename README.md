@@ -1,7 +1,7 @@
 Student Directory
 ==================
 
-The student directory script is annoying.
+A small ruby program for learning the first steps in ruby programing language.
 
 How to use
 -------------
